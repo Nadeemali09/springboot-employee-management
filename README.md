@@ -3,8 +3,8 @@ Spring Boot Employee Management System
 A complete REST API built using Spring Boot for managing employee data.
 This project follows a clean layered architecture (Controller → Service → Repository) and includes DTO mapping, validation, exception handling, and MySQL integration.
 
-🚀 Features
-
+ Features
+ 
 Create new employee
 
 Update employee
