@@ -10,7 +10,9 @@ import org.n.r.s.em_system.employee_mst.Modal.EmployeeRequest;
 import org.n.r.s.em_system.employee_mst.Modal.EmployeeResponse;
 import org.n.r.s.em_system.employee_mst.Repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -31,14 +33,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         return convert(saved);
     }
 
+    
     @Override
+     @Cacheable(value = "employee", key = "#id")
     public EmployeeResponse getEmployeeById(Long id) {
+        System.out.println("Fetching from DB... hi nadeem");
+
         Employee employee = employeeRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Employee Not Found"));
         return convert(employee);
     }
 
     @Override
+    @Cacheable(value = "employee")
     public List<EmployeeResponse> getAllEmployees() {
         return employeeRepo.findAll()
             .stream()
@@ -47,6 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @CachePut(value = "employee", key ="id")
     public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
         Employee employee = employeeRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Employee Not Found"));
@@ -57,6 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @CacheEvict(value = "employee", key="id")
     public void deleteEmployee(Long id) {
         Employee employee = employeeRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Employee Not Found"));

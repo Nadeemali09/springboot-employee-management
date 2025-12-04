@@ -33,9 +33,7 @@ public class Employee {
     private LocalDate joiningDate;
 
     public enum Status {
-        ACTIVE,
-        INACTIVE,
-        SUSPENDED
+        ACTIVE
 }
 
 
